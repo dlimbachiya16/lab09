@@ -4,35 +4,49 @@
 
 
 int counter = 0;
-
+pthread_mutex_t lock;
+pthread_cond_t is_one, is_two, is_three;
 
 void * routine_even(void * arg)
 {
+    pthread_mutex_lock(&lock);
     // event: counter is zero (happens first)
     if (counter == 0) {
         printf("zero\n");
-        counter += 1;
+        counter ++;
+	pthread_cond_signal(&is_one);
     }
+
     // event: counter is two
-    if (counter == 2) {
-        printf("two\n");
-        counter += 1;
+    while (counter != 2) {
+       pthread_cond_wait(&is_two, &lock);
     }
+    printf("two\n");
+    counter += 1;
+    pthread_cond_signal(&is_three);
+    pthread_mutex_unlock(&lock);
     return NULL;
 }
 
 
 void * routine_odd(void * arg)
 {
+    pthread_mutex_lock(&lock);
     // event: counter is one
-    if (counter == 1) {
-        printf("one\n");
-        counter += 1;
+    while (counter != 1) {
+        pthread_cond_wait(&is_one, &lock);
     }
+    printf("one\n");
+    counter += 1;
+    pthread_cond_signal(&is_two);
+
     // event: counter is three
-    if (counter == 3) {
-        printf("three\n");
+    while (counter != 3) {
+        pthread_cond_wait(&is_three, &lock);
     }
+    printf("three\n");
+
+    pthread_mutex_unlock(&lock);
     return NULL;
 }
 

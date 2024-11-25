@@ -23,10 +23,18 @@ int main(int argc, char * argv[])
 
     // TODO: launch n threads with each executing f
     for (int i = 0 ; i < n ; i++) {
+	    if(pthread_create(&tids[i], NULL, routine_hello, NULL) != 0){
+		    perror("Failed");
+		    exit(1);
+	    }
     }
 
     // TODO: use join to wait for all the threads
     for (int i = 0 ; i < n ; i++) {
+	    if(pthread_join(tids[i], NULL) != 0){
+		    perror("Failed");
+		    exit(1);
+	    }
     }
 
     printf("Finished\n");

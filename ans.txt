@@ -1,1 +1,55 @@
 your answers here
+
+#2a.
+it will have one thread.
+
+#2b.
+func *f is the thread routine.
+
+#2c.
+one thread is created for each passsenger, its thread  routine was start_passenger.
+One thread is created for each elevator, its thread routine was start_elevator.
+
+#4a.
+if Thread B doesn't terminate, then Thread A will remain blocked indefinitely.
+
+#4b.
+if it doesn't terminate then the simulation won't end properly. if an elevator thread is stuck in an infinite loop or deadlock, it will prevent the simulation from ending because the pthread_jpin calls for the elevator threads will not return.
+
+#7a.
+main thread creates 2 thread: routine_even, routine_odd.
+
+#7b.
+both of them can run concurrently. 
+because of no synchronization mechanism and the kernel shceduler determines the execution order.
+both of the threads can execute simultaneously.
+
+#8.
+No, because of race condition.
+
+#9a.
+counter starts at 0, counter is 1. counter is 2, counter is 3.
+
+#9b.
+it can be because of race conditions such as incorrect reads or writes to counter,
+incorrect scheduling such as the kernel may allow routine_odd to run before routine_even finishes its tasks,
+missing events due to no mechanism to ensure the correct sequence of the actions.
+
+#10a.
+counter
+
+#10b.
+unlocked
+
+#10c.
+Thread B releases the mutex by calling pthread_mutex_unlock. 
+
+#11a.
+counter != 1
+
+#11b.
+no, the thread will release ownership of the mutex lock while its blokced on the condition variable.
+
+#11c.
+while loop must evaluate to false. and shared memory must be updated correctly by another thread before Thread A reacquires the mutex and checks the predicate again.
+
